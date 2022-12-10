@@ -1,70 +1,44 @@
 let input = require('./input');
+let sampleInput2 = require('./sampleInput');
 
-let sampleInput = ['30373', '25512', '65332', '33549', '35390'];
+let sampleInput = ['noop', 'addx 3', 'addx -5'];
 
-// input = sampleInput;
+// input = sampleInput2;
 
-for (x = 0; x < input.length; x++) {
-  input[x] = input[x].split('').map((num) => parseInt(num));
-}
+let totalCycle = 0;
+let X = 1;
+let totalSignalStrength = 0;
 
-let visibleTrees = 0;
+const cycleToRecord = [20, 60, 100, 140, 180, 220];
 
-for (var i = 0; i < input.length; i++) {
-  for (var j = 0; j < input[i].length; j++) {
-    if (
-      j - 1 < 0 ||
-      j + 1 > input.length - 1 ||
-      i - 1 < 0 ||
-      i + 1 > input.length - 1
-    ) {
-      visibleTrees++;
-    } else {
-      if (!isHidden(i, j, input)) {
-        visibleTrees++;
+for (let i = 0; i < input.length; i++) {
+  const signal = input[i].split(' ')[0];
+  const count = parseInt(input[i].split(' ')[1]);
+
+  if (signal === 'noop') {
+    totalCycle = totalCycle + 1;
+    if (cycleToRecord.includes(totalCycle)) {
+      totalSignalStrength += totalCycle * X;
+      console.log(totalCycle * X, totalCycle, X, 'totalCycle 1');
+    }
+  } else {
+    if (!isNaN(count)) {
+      totalCycle = totalCycle + 1;
+
+      if (cycleToRecord.includes(totalCycle)) {
+        totalSignalStrength += totalCycle * X;
+        console.log(totalCycle * X, totalCycle, X, 'totalCycle 2');
       }
+
+      totalCycle = totalCycle + 1;
+
+      if (cycleToRecord.includes(totalCycle)) {
+        totalSignalStrength += totalCycle * X;
+        console.log(totalCycle * X, totalCycle, X, 'totalCycle 3');
+      }
+      X = X + count;
     }
   }
 }
 
-console.log(visibleTrees, 'visibleTrees');
-
-function isHidden(i, j, input) {
-  let left = i - 1;
-  let isLeftHidden = false;
-  while (left >= 0) {
-    if (input[left][j] >= input[i][j]) {
-      isLeftHidden = true;
-    }
-    left--;
-  }
-
-  let right = i + 1;
-  let isRightHidden = false;
-  while (right < input.length) {
-    if (input[right][j] >= input[i][j]) {
-      isRightHidden = true;
-    }
-    right++;
-  }
-
-  let top = j - 1;
-  let isTopHidden = false;
-  while (top >= 0) {
-    if (input[i][top] >= input[i][j]) {
-      isTopHidden = true;
-    }
-    top--;
-  }
-
-  let bottom = j + 1;
-  let isBottomHidden = false;
-  while (bottom < input.length) {
-    if (input[i][bottom] >= input[i][j]) {
-      isBottomHidden = true;
-    }
-    bottom++;
-  }
-
-  return isBottomHidden && isTopHidden && isRightHidden && isLeftHidden;
-}
+console.log(totalCycle, X, totalSignalStrength);
