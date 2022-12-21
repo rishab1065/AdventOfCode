@@ -53,6 +53,7 @@ function solve(map, node, index) {
 while (true) {
   const ans = solve(map, 'root', i);
   // console.log(factor, i);
+
   if (ans === 0) {
     console.log(i);
     break;

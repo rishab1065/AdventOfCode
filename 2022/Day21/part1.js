@@ -22,7 +22,7 @@ for (const line of input) {
   }
 }
 
-console.log(map, 'map');
+// console.log(map, 'map');
 
 function solve(map, node) {
   const currentNode = map[node];
